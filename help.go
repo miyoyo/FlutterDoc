@@ -4,8 +4,8 @@ import "github.com/bwmarrin/discordgo"
 
 // Help users when they mention the bot
 func Help(s *discordgo.Session, h *discordgo.MessageCreate) {
-	if len(h.Content) >= 21 {
-		if h.Content[:21] == "<@462299661995343882>" {
+	for _, user := range h.Mentions {
+		if user.ID == s.State.User.ID {
 			s.ChannelMessageSendEmbed(h.ChannelID, &discordgo.MessageEmbed{
 				Title:       "ℹ️ Help",
 				Description: "⚠️ These commands can be within a message, and there can be multiple per messages",
