@@ -20,6 +20,7 @@ func main() {
 		panic("Could not create bot: " + err.Error())
 	}
 
+	bot.AddHandler(Help)
 	bot.AddHandler(Search)
 
 	if bot.Open() != nil {
