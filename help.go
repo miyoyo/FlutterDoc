@@ -20,7 +20,7 @@ func Help(s *discordgo.Session, h *discordgo.MessageCreate) {
 					},
 					{
 						Name:  "&[package]",
-						Value: "Shows up to 13 search results about 'package' on Pub",
+						Value: "Shows up to 10 search results about 'package' on Pub",
 					},
 				},
 				Footer: &discordgo.MessageEmbedFooter{
