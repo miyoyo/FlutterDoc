@@ -22,6 +22,8 @@ func main() {
 
 	bot.AddHandler(Help)
 	bot.AddHandler(Search)
+	bot.AddHandler(DeDupe)
+	bot.AddHandler(DeleteDeDupe)
 
 	if bot.Open() != nil {
 		panic("Could not open bot: " + err.Error())
