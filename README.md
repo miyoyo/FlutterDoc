@@ -5,6 +5,7 @@ A bot offering exactly what we need in [The r/FlutterDev Discord Server](https:/
   * `The following syntax returns the documentation for a ![Class], it can be embedded in a discussion and you can mention multiple ![Classes] in a single sentence.`
   * `If you're not sure of what you want, use ?[Class] to search for it.`
   * `If you're looking for a &[package], this is the syntax that searches on pub for you.`
+  * `You can ![Mix] and &[match] them in ?[any] order you ![Desire], it'll ?[Handle] each &[invidivually].`
 * Nags users reposting a message in multiple channels when that message is
   * Sufficiently lengthy (30 characters)
   * One of the last 5 messages in any channel
