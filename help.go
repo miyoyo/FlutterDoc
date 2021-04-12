@@ -24,7 +24,7 @@ func Help(s *discordgo.Session, h *discordgo.MessageCreate) {
 					},
 				},
 				Footer: &discordgo.MessageEmbedFooter{
-					Text: "Source: https://gist.github.com/miyoyo/8641057636892863791ca7c41a1fab97",
+					Text: "Source: https://github.com/miyoyo/FlutterDoc",
 				},
 			})
 		}
