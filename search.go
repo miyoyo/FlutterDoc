@@ -127,7 +127,7 @@ func Search(session *discordgo.Session, message *discordgo.MessageCreate) {
 			for _, result := range s.Packages[0:min(10, len(s.Packages))] {
 				fields = append(fields, &discordgo.MessageEmbedField{
 					Name:  result.Package,
-					Value: "https://pub.dev/package/" + result.Package,
+					Value: "https://pub.dev/packages/" + result.Package,
 				})
 			}
 
