@@ -24,6 +24,7 @@ var (
 	libTopMatch     *regexp.Regexp
 	topPropMatch    *regexp.Regexp
 	libTopPropMatch *regexp.Regexp
+	blockCodeMatch  *regexp.Regexp
 )
 
 func init() {
@@ -33,6 +34,8 @@ func init() {
 	libTopMatch = regexp.MustCompile(`^([A-Za-z$_][A-Za-z0-9$_:.]*?)\/([A-Za-z$_A-Za-z0-9$_]*?)$`)
 	topPropMatch = regexp.MustCompile(`^([A-Za-z$_A-Za-z0-9$_]*?)\.([A-Za-z$_<+|[>\/^~&*%=\-][A-Za-z0-9$_\]=\/<>\-]*?)$`)
 	libTopPropMatch = regexp.MustCompile(`^([A-Za-z$_][A-Za-z0-9$_:.]*?)\/([A-Za-z$_A-Za-z0-9$_]*?)\.([A-Za-z$_<+|[>\/^~&*%=\-][A-Za-z0-9$_\]=\/<>\-]*?)$`)
+	// Block of code match.
+	blockCodeMatch = regexp.MustCompile("```.*```")
 }
 
 // Search for an element in the documentation or on pub
@@ -45,13 +48,9 @@ func Search(session *discordgo.Session, message *discordgo.MessageCreate) {
 		return
 	}
 
-	query := message.Content
-
+	rawMsg := message.Content
+	query := blockCodeMatch.ReplaceAllString(rawMsg, "")
 	matches := questionMatch.FindAllStringSubmatch(query, -1)
-	if len(matches) == 0 {
-		return
-	}
-
 	for _, match := range matches {
 		switch match[1] {
 		case `!`:
