@@ -35,7 +35,7 @@ func init() {
 	topPropMatch = regexp.MustCompile(`^([A-Za-z$_A-Za-z0-9$_]*?)\.([A-Za-z$_<+|[>\/^~&*%=\-][A-Za-z0-9$_\]=\/<>\-]*?)$`)
 	libTopPropMatch = regexp.MustCompile(`^([A-Za-z$_][A-Za-z0-9$_:.]*?)\/([A-Za-z$_A-Za-z0-9$_]*?)\.([A-Za-z$_<+|[>\/^~&*%=\-][A-Za-z0-9$_\]=\/<>\-]*?)$`)
 	// Block of code match.
-	blockCodeMatch = regexp.MustCompile("(?<!\\)```.*?```")
+	blockCodeMatch = regexp.MustCompile("(?s)```.*?```")
 }
 
 // Search for an element in the documentation or on pub
