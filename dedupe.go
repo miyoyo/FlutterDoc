@@ -47,9 +47,9 @@ func DeDupe(s *discordgo.Session, m *discordgo.MessageCreate) {
 					}
 					count++
 				}
-				
-				// Ban the user after 4 messages: Origin + 3 spam messages
-				if count >= 3 {
+
+				// Ban the user after 6 messages: Origin + 5 additional messages
+				if count >= 5 {
 					s.GuildBanCreateWithReason(s.State.Guilds[0].ID, m.Author.ID, "Excessive spam", 7)
 					break channelLoop
 				}
