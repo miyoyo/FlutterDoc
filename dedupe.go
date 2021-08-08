@@ -32,6 +32,8 @@ func DeDupe(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if len(m.ContentWithMentionsReplaced()) >= 30 {
+		sent := false
+		count := 0
 	channelLoop:
 		for k, c := range messageCache {
 			if k == m.ChannelID {
@@ -39,7 +41,16 @@ func DeDupe(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 			for _, v := range c {
 				if m.Content == v.Content && m.Author.ID == v.Author.ID {
-					s.ChannelMessageSend(metaChannel, "Hey, "+m.Author.Mention()+", please take a second to read the "+fmt.Sprintf("<#%s>", rulesChannel)+",\nspecifically, the section about not duplicating your messages across channels.\nIf you want to move a message, copy it, delete it, **then** paste it in another channel.\n\nThanks!")
+					if !sent {
+						s.ChannelMessageSend(metaChannel, "Hey, "+m.Author.Mention()+", please take a second to read the "+fmt.Sprintf("<#%s>", rulesChannel)+",\nspecifically, the section about not duplicating your messages across channels.\nIf you want to move a message, copy it, delete it, **then** paste it in another channel.\n\nThanks!")
+						sent = true
+					}
+					count++
+				}
+				
+				// Ban the user after 4 messages: Origin + 3 spam messages
+				if count >= 3 {
+					s.GuildBanCreateWithReason(s.State.Guilds[0].ID, m.Author.ID, "Excessive spam", 7)
 					break channelLoop
 				}
 			}
