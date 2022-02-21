@@ -28,7 +28,7 @@ var (
 )
 
 func init() {
-	questionMatch = regexp.MustCompile(`([?!&])\[(.*?)\]`)
+	questionMatch = regexp.MustCompile(`([?!&$])\[(.*?)\]`)
 	prefixMatch = regexp.MustCompile(`^([A-Za-z$_][A-Za-z0-9$_:.]*?\.)([A-Za-z$_A-Za-z0-9$_]*?)\.([A-Za-z$_<+|[>\/^~&*%=\-][A-Za-z0-9$_\]=\/<>\-]*?)$`)
 	topMatch = regexp.MustCompile(`^([A-Za-z$_A-Za-z0-9$_]*?)$`)
 	libTopMatch = regexp.MustCompile(`^([A-Za-z$_][A-Za-z0-9$_:.]*?)\/([A-Za-z$_A-Za-z0-9$_]*?)$`)
@@ -104,6 +104,8 @@ func Search(session *discordgo.Session, message *discordgo.MessageCreate) {
 					},
 				)
 			}
+		case `$`:
+			fallthrough
 		case `&`:
 			r, err := http.Get("https://pub.dev/api/search?q=" + match[2])
 			if err != nil {
@@ -121,22 +123,30 @@ func Search(session *discordgo.Session, message *discordgo.MessageCreate) {
 				notFound(session, message.ChannelID, match[2])
 				return
 			}
-			fields := []*discordgo.MessageEmbedField{}
 
-			for _, result := range s.Packages[0:min(10, len(s.Packages))] {
-				fields = append(fields, &discordgo.MessageEmbedField{
-					Name:  result.Package,
-					Value: "https://pub.dev/packages/" + result.Package,
-				})
+			if match[1] == "$" {
+				session.ChannelMessageSend(
+					message.ChannelID,
+					"https://pub.dev/packages/"+s.Packages[0].Package,
+				)
+			} else {
+				fields := []*discordgo.MessageEmbedField{}
+
+				for _, result := range s.Packages[0:min(10, len(s.Packages))] {
+					fields = append(fields, &discordgo.MessageEmbedField{
+						Name:  result.Package,
+						Value: "https://pub.dev/packages/" + result.Package,
+					})
+				}
+
+				session.ChannelMessageSendEmbed(
+					message.ChannelID,
+					&discordgo.MessageEmbed{
+						Title:  "Pub Search Results - " + match[2],
+						Fields: fields,
+					},
+				)
 			}
-
-			session.ChannelMessageSendEmbed(
-				message.ChannelID,
-				&discordgo.MessageEmbed{
-					Title:  "Pub Search Results - " + match[2],
-					Fields: fields,
-				},
-			)
 		}
 	}
 }
