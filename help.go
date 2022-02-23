@@ -22,6 +22,10 @@ func Help(s *discordgo.Session, h *discordgo.MessageCreate) {
 						Name:  "&[package]",
 						Value: "Shows up to 10 search results about 'package' on Pub",
 					},
+					{
+						Name: "$[package]",
+						Value: "Links to the closest matching result to 'package' on Pub",
+					},
 				},
 				Footer: &discordgo.MessageEmbedFooter{
 					Text: "Source: https://github.com/miyoyo/FlutterDoc",
