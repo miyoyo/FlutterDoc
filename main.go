@@ -20,6 +20,8 @@ func main() {
 		panic("Could not create bot: " + err.Error())
 	}
 
+	bot.Identify.Intents = discordgo.IntentsAllWithoutPrivileged | discordgo.IntentMessageContent
+
 	bot.AddHandler(Help)
 	bot.AddHandler(Search)
 	bot.AddHandler(DeDupe)
@@ -34,20 +36,23 @@ func main() {
 			bot.UpdateStatusComplex(discordgo.UpdateStatusData{
 				Status: "idle",
 				AFK:    true,
-				Game: &discordgo.Game{
-					Name: "updating search...",
+				Activities: []*discordgo.Activity{
+					{
+						Name: "Updating search...",
+						Type: discordgo.ActivityTypeGame,
+					},
 				},
 			})
 			updateCache()
-			bot.UpdateStatus(0, "mention me for commands.")
+			bot.UpdateGameStatus(0, "mention me for commands.")
 		})
-		gocron.Every(30).Minutes().Do(func() { bot.UpdateStatus(0, "mention me for commands.") })
+		gocron.Every(30).Minutes().Do(func() { bot.UpdateGameStatus(0, "mention me for commands.") })
 	}()
 
 	fmt.Println("FlutterDoc running. CTRL+C to exit")
 
 	sc := make(chan os.Signal, 1)
-	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
 	bot.Close()
 }
