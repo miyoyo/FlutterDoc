@@ -31,7 +31,7 @@ func DeDupe(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if len(m.ContentWithMentionsReplaced()) >= 30 {
+	if len(m.ContentWithMentionsReplaced()) >= 15 {
 		sent := false
 		count := 0
 	channelLoop:
