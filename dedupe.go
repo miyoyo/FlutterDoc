@@ -8,7 +8,7 @@ import (
 
 var messageCache = map[string][]*discordgo.Message{}
 var metaChannel = "421444762956988418"
-var rulesChannel = "421444488205041665"
+var rulesChannel = "1137753387715264613"
 
 // DeDupe messages sent on the server by caching them into a map and comparing them as they come in
 func DeDupe(s *discordgo.Session, m *discordgo.MessageCreate) {
