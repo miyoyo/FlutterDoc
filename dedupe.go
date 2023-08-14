@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -9,6 +10,7 @@ import (
 var messageCache = map[string][]*discordgo.Message{}
 var metaChannel = "421444762956988418"
 var rulesChannel = "1137753387715264613"
+var emojiRegex = regexp.MustCompile(`<(:.*?:)\d{19}>`)
 
 // DeDupe messages sent on the server by caching them into a map and comparing them as they come in
 func DeDupe(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -31,7 +33,9 @@ func DeDupe(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if len(m.ContentWithMentionsReplaced()) >= 15 {
+	filtered := emojiRegex.ReplaceAllString(m.ContentWithMentionsReplaced(), "$1")
+
+	if len(filtered) >= 15 {
 		sent := false
 		count := 0
 	channelLoop:
