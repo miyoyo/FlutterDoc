@@ -35,7 +35,7 @@ func DeDupe(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	filtered := emojiRegex.ReplaceAllString(m.ContentWithMentionsReplaced(), "$1")
 
-	if len(filtered) >= 15 {
+	if len(filtered) >= 20 {
 		sent := false
 		count := 0
 	channelLoop:
